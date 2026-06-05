@@ -278,22 +278,22 @@
             <div class="gallery-item">
                 <img src="first.jpeg" alt="Award Ceremony">
                 <div class="overlay">
-                    <h3>Complete 1st year </h3>
-                    <p>Complete 1st year without any arrears</p>
+                    <h3>Complete 1st year</h3>
+                    <p>Completed the 1st year without any arrears.</p>
                 </div>
             </div>
             <div class="gallery-item">
                 <img src="second.png" alt="Presentation">
                 <div class="overlay">
                     <h3>Paper Presentation</h3>
-                    <p>My First Paper Presentation at the Symposium.</p>
+                    <p>My first Paper Presentation at the Symposium.</p>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="third.jpeg" alt="Hackathon">
+                <img src="third.jpeg" alt="Leadership Award">
                 <div class="overlay">
-                    <h3>Leader of Club active</h3>
-                    <p>Actively leading the coding club and organizing events.</p>
+                    <h3>Leader of club activity</h3>
+                    <p>Actively leading the club activities.</p>
                 </div>
             </div>
         </div>
@@ -342,7 +342,6 @@
         <p>&copy; 2026 Harish. All Rights Reserved.</p>
     </footer>
 
-    <!-- SCRIPT FOR ANIMATION -->
     <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import {
@@ -351,54 +350,19 @@ import {
   addDoc
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
- const firebaseConfig = {
-    apiKey: "AIzaSyCCRAUWki_LmmLMuefRCbpXreg14EW4fZc",
-    authDomain: "portfolio-3661a.firebaseapp.com",
-    projectId: "portfolio-3661a",
-    storageBucket: "portfolio-3661a.firebasestorage.app",
-    messagingSenderId: "211171291324",
-    appId: "1:211171291324:web:49cb2a4b366a4d6ed120b9",
-    measurementId: "G-8CPHZ7WC96"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyB4pDtkE4fqUeYKG8ryQZyhP-wvRaxNmjk",
+  authDomain: "portfolio-468b0.firebaseapp.com",
+  databaseURL: "https://portfolio-468b0-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "portfolio-468b0",
+  storageBucket: "portfolio-468b0.firebasestorage.app",
+  messagingSenderId: "1080221180713",
+  appId: "1:1080221180713:web:2746ea1c57820279b3cd38",
+  measurementId: "G-XTSJ88X2D0"
+};
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-const RESEND_API_KEY = "re_gB1no2Dv_5RWumGHzj6U4X7AFs5isxFFq";
-const RESEND_FROM_EMAIL = "no-reply@yourdomain.com"; // Replace with a verified Resend sender email
-const RESEND_TO_EMAIL = "harishrathnakumar10@gmail.com"; // Recipient notification email
-const RESEND_API_URL = "https://api.resend.com/emails";
-
-async function sendNotificationEmail(name, email, message) {
-    const body = {
-        from: RESEND_FROM_EMAIL,
-        to: [RESEND_TO_EMAIL],
-        subject: `New portfolio message from ${name}`,
-        html: `
-            <h2>New contact form message</h2>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Message:</strong></p>
-            <p>${message.replace(/\n/g, '<br>')}</p>
-        `
-    };
-
-    const response = await fetch(RESEND_API_URL, {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${RESEND_API_KEY}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Resend email failed: ${response.status} ${errorText}`);
-    }
-
-    return response.json();
-}
 
 // Skills animation
 const skillsSection = document.getElementById('skills');
@@ -428,6 +392,18 @@ form.addEventListener("submit", async (e) => {
     const email = form.querySelector('input[type="email"]').value;
     const message = form.querySelector('textarea').value;
 
+    await fetch("http://localhost:3000/send-email", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    name,
+    email,
+    message
+  })
+});
+
     try {
         await addDoc(collection(db, "messages"), {
             name,
@@ -436,14 +412,12 @@ form.addEventListener("submit", async (e) => {
             createdAt: new Date()
         });
 
-        await sendNotificationEmail(name, email, message);
-
-        alert("Message sent successfully! Notification email delivered.");
+        alert("Message sent successfully!");
         form.reset();
 
     } catch (error) {
         console.error(error);
-        alert("Error sending message. Please try again later.");
+        alert("Error sending message.");
     }
 });
 </script>
