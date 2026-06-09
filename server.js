@@ -10,10 +10,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 app.post("/send-email", async (req, res) => {
   const { name, email, message } = req.body;
+  app.get("/", (req, res) => {
+  res.send("Portfolio API is running successfully 🚀");
+});
 
   try {
     const response = await resend.emails.send({
@@ -34,7 +38,9 @@ app.post("/send-email", async (req, res) => {
     res.status(500).json(error);
   }
 });
+const PORT = process.env.PORT || 3000;
 
-app.listen(3000, () => {
-  console.log("Server running on http://localhost:3000");
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
