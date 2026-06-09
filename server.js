@@ -15,13 +15,20 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Serve static files (images, css, js)
+app.use(express.static(__dirname));
+
+// Home route - serves your portfolio
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+// Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Contact form endpoint
 app.post("/send-email", async (req, res) => {
   const { name, email, message } = req.body;
-  app.get("/", (req, res) => {
-  res.send("Portfolio API is running successfully 🚀");
-});
 
   try {
     const response = await resend.emails.send({
@@ -33,18 +40,25 @@ app.post("/send-email", async (req, res) => {
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Message:</strong> ${message}</p>
-      `
+      `,
     });
 
-    res.json(response);
+    res.status(200).json({
+      success: true,
+      response,
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json(error);
+
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
   }
 });
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
