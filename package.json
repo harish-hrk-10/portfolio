@@ -1,28 +1,28 @@
 {
   "name": "portfolio",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
+  "description": "Harish's Portfolio built with Next.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/harish-hrk-10/portfolio.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Harish",
   "license": "ISC",
-  "type": "module",
+  "dependencies": {
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "resend": "^3.5.0"
+  },
   "bugs": {
     "url": "https://github.com/harish-hrk-10/portfolio/issues"
   },
-  "homepage": "https://github.com/harish-hrk-10/portfolio#readme",
-  "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "resend": "^6.12.4"
-  }
+  "homepage": "https://github.com/harish-hrk-10/portfolio#readme"
 }
