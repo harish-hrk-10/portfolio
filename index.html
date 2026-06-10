@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Portfolio</title>
+    
+    <!-- Fonts: 'Inter' for a clean, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons: FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES --- */
+        :root {
+            --primary-color: #2563EB; /* Royal Blue */
+            --secondary-color: #1E40AF; /* Darker Blue */
+            --bg-color: #ffffff;
+            --bg-light: #f3f4f6;
+            --text-main: #1f2937;
+            --text-light: #6b7280;
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        /* --- GLOBAL RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-main); background-color: var(--bg-color); line-height: 1.6; }
+        html { scroll-behavior: smooth; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+        .logo { font-weight: 700; font-size: 1.5rem; color: var(--primary-color); }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-weight: 500; font-size: 0.95rem; transition: var(--transition); }
+        .nav-links a:hover { color: var(--primary-color); }
+
+        /* --- HERO SECTION --- */
+        .hero { display: flex; align-items: center; justify-content: space-between; padding: 100px 10%; background-color: var(--bg-light); min-height: 90vh; }
+        .hero-content { flex: 1; padding-right: 50px; }
+        .hero-content h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; color: var(--text-main); }
+        .hero-content h1 span { color: var(--primary-color); }
+        .hero-content p { font-size: 1.2rem; color: var(--text-light); margin-bottom: 30px; max-width: 500px; }
+        .btn { display: inline-block; background-color: var(--primary-color); color: white; padding: 12px 30px; border-radius: var(--border-radius); font-weight: 600; transition: var(--transition); border: none; cursor: pointer;}
+        .btn:hover { background-color: var(--secondary-color); transform: translateY(-2px); }
+        .hero-img-container { flex: 1; display: flex; justify-content: center; }
+        .hero-img { width: 350px; height: 350px; object-fit: cover; border-radius: 50%; border: 5px solid white; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+        /* --- SECTIONS GENERAL --- */
+        section { padding: 80px 10%; }
+        .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 60px; position: relative; }
+        .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--primary-color); margin: 10px auto 0; border-radius: 2px; }
+
+        /* --- SKILLS SECTION (UPDATED FOR ANIMATION) --- */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .skill-category h3 { margin-bottom: 20px; font-size: 1.3rem; }
+        .skill-bar-container { margin-bottom: 20px; }
+        .skill-info { display: flex; justify-content: space-between; margin-bottom: 5px; font-weight: 500; }
+        
+        .progress-bg {
+            background: #e5e7eb;
+            height: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* Changed: Start width at 0 and add transition */
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 10px;
+            width: 0; /* Starts at 0 width */
+            transition: width 1.5s cubic-bezier(0.22, 0.61, 0.36, 1); /* Smooth animation */
+        }
+
+        /* --- EXPERIENCE & EDUCATION --- */
+        .timeline-container { background-color: var(--bg-light); }
+        .timeline { max-width: 800px; margin: 0 auto; position: relative; padding-left: 30px; border-left: 3px solid #e5e7eb; }
+        .timeline-item { position: relative; margin-bottom: 40px; }
+        .timeline-dot { position: absolute; left: -36px; top: 5px; width: 15px; height: 15px; background: var(--primary-color); border-radius: 50%; border: 3px solid white; }
+        .timeline-content { background: white; padding: 20px; border-radius: var(--border-radius); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .timeline-date { color: var(--primary-color); font-size: 0.9rem; font-weight: 600; margin-bottom: 5px; }
+
+        /* --- CERTIFICATIONS --- */
+        .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; }
+        .cert-card { border: 1px solid #e5e7eb; padding: 25px; border-radius: var(--border-radius); text-align: center; transition: var(--transition); }
+        .cert-card:hover { border-color: var(--primary-color); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .cert-icon { font-size: 2rem; color: var(--primary-color); margin-bottom: 15px; }
+
+        /* --- GALLERY --- */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .gallery-item { position: relative; overflow: hidden; border-radius: var(--border-radius); height: 250px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .gallery-item:hover img { transform: scale(1.1); }
+        .overlay { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); color: white; padding: 15px; transform: translateY(100%); transition: var(--transition); }
+        .gallery-item:hover .overlay { transform: translateY(0); }
+
+        /* --- CONTACT --- */
+        .contact-container { display: flex; gap: 50px; flex-wrap: wrap; }
+        .contact-info, .contact-form { flex: 1; min-width: 300px; }
+        .info-item { display: flex; align-items: center; margin-bottom: 20px; }
+        .info-item i { width: 40px; height: 40px; background: #e0e7ff; color: var(--primary-color); display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-right: 15px; }
+        .social-links { margin-top: 30px; }
+        .social-links a { font-size: 1.5rem; margin-right: 20px; color: var(--text-light); transition: var(--transition); }
+        .social-links a:hover { color: var(--primary-color); }
+        .form-group { margin-bottom: 20px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: var(--border-radius); font-family: inherit; }
+
+        /* --- FOOTER --- */
+        footer { text-align: center; padding: 30px; background: #1f2937; color: white; font-size: 0.9rem; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero { flex-direction: column-reverse; text-align: center; padding-top: 50px; }
+            .hero-content { padding-right: 0; margin-top: 30px; }
+            .hero-img { width: 250px; height: 250px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="logo">Harish</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#skills">Skills</a>
+            <a href="#experience">Experience</a>
+            <a href="#achievements">Gallery</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Hi, I'm <br> <span>Harish</span></h1>
+            <p>I’m Harish, from Thoothukudi, and I am currently pursuing my BCA degree at Kamaraj College. I have a strong interest in technology and web development, and I enjoy creating my own websites to improve my skills.</p>
+            <a href="#contact" class="btn">Get in Touch</a>
+            <a href="#achievements" class="btn" style="background:transparent; color:var(--text-main); border:1px solid #ccc; margin-left:10px;">View Work</a>
+        </div>
+        <div class="hero-img-container">
+            <img src="hrk.jpeg" alt="Profile Photo" class="hero-img">
+        </div>
+    </section>
+
+    <!-- SKILLS SECTION -->
+    <section id="skills">
+        <h2 class="section-title">My Skills</h2>
+        <div class="skills-grid">
+            
+            <!-- Technical Skills -->
+            <div class="skill-category">
+                <h3>Technical Skills</h3>
+                
+                <div class="skill-bar-container">
+                    <div class="skill-info"><span>Web Development</span> <span>90%</span></div>
+                    <!-- CHANGED: Replaced inline style with data-width -->
+                    <div class="progress-bg"><div class="progress-fill" data-width="90%"></div></div>
+                </div>
+                
+                <div class="skill-bar-container">
+                    <div class="skill-info"><span>Data Analysis</span> <span>75%</span></div>
+                    <div class="progress-bg"><div class="progress-fill" data-width="75%"></div></div>
+                </div>
+
+                <div class="skill-bar-container">
+                    <div class="skill-info"><span>Project Management</span> <span>80%</span></div>
+                    <div class="progress-bg"><div class="progress-fill" data-width="85%"></div></div>
+                </div>
+            </div>
+
+            <!-- Soft Skills / Tools -->
+            <div class="skill-category">
+                <h3>Tools & Soft Skills</h3>
+                
+                <div class="skill-bar-container">
+                    <div class="skill-info"><span>Communication</span> <span>90%</span></div>
+                    <div class="progress-bg"><div class="progress-fill" data-width="95%"></div></div>
+                </div>
+                
+                <div class="skill-bar-container">
+                    <div class="skill-info"><span>Problem Solving</span> <span>80%</span></div>
+                    <div class="progress-bg"><div class="progress-fill" data-width="80%"></div></div>
+                </div>
+
+                <div class="skill-bar-container">
+                    <div class="skill-info"><span>Leadership</span> <span>75%</span></div>
+                    <div class="progress-bg"><div class="progress-fill" data-width="80%"></div></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- EXPERIENCE & EDUCATION SECTION -->
+    <section id="experience" class="timeline-container">
+        <h2 class="section-title">Experience & Education</h2>
+        <div class="timeline">
+            
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2025</div>
+                    <h3>HTML and CSS</h3>
+                    <p>Designed and developed responsive web pages using HTML and CSS</p>
+                    <p style="margin-top:10px; font-size:0.9rem; color:var(--text-light);">Web Development (HTML & CSS)</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2025</div>
+                    <h3>C++</h3>
+                    <p>Learned C++ with focus on object-oriented concepts, loops, arrays, and functions</p>
+                    <p style="margin-top:10px; font-size:0.9rem; color:var(--text-light);">C++ Programming</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2025</div>
+                    <h3>Python</h3>
+                    <p>Gained strong fundamentals in Python, including variables, control statements, functions, and basic problem solving</p>
+                    <p style="margin-top:10px; font-size:0.9rem; color:var(--text-light);">Python Programming</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CERTIFICATIONS SECTION -->
+    <section id="certifications">
+        <h2 class="section-title">Certifications</h2>
+        <div class="cert-grid">
+            <div class="cert-card">
+                <i class="fas fa-certificate cert-icon"></i>
+                <h3>Build a natural language processing solution with Azure AI Language</h3>
+                <p>Issued by Microsoft</p>
+                <small>December 2, 2024</small>
+            </div>
+            <div class="cert-card">
+                <i class="fas fa-certificate cert-icon"></i>
+                <h3>Implement a data warehouse in Microsoft Fabric</h3>
+                <p>Issued by Microsoft</p>
+                <small>December 20, 2024</small>
+            </div>
+            <div class="cert-card">
+                <i class="fas fa-certificate cert-icon"></i>
+                <h3> Migrate SQL Server workloads to Azure SQL Database</h3>
+                <p>Issued by Microsoft</p>
+                <small>December 3, 2024</small>
+            </div>
+        </div>
+    </section>
+
+    <!-- ACHIEVEMENTS GALLERY -->
+    <section id="achievements" style="background-color: var(--bg-light);">
+        <h2 class="section-title">Achievements Gallery</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="first.jpeg" alt="Award Ceremony">
+                <div class="overlay">
+                    <h3>Complete 1st year</h3>
+                    <p>Completed the 1st year without any arrears.</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="second.png" alt="Presentation">
+                <div class="overlay">
+                    <h3>Paper Presentation</h3>
+                    <p>My first Paper Presentation at the Symposium.</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="third.jpeg" alt="Leadership Award">
+                <div class="overlay">
+                    <h3>Leader of club activity</h3>
+                    <p>Actively leading the club activities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact">
+        <h2 class="section-title">Contact Me</h2>
+        <div class="contact-container">
+            
+            <div class="contact-info">
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div><h4>Location</h4><p>India, Thoothukudi</p></div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <div><h4>Email</h4><p>harishrathnakumar10@gmail.com</p></div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <div><h4>Phone</h4><p>+91 9384526900</p></div>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/harish-rathna-kumar-m-a86748323/" target="_blank"><i class="fab fa-linkedin"></i></a>
+
+                    <a href="https://github.com/harish-hrk-10" target="_blank"><i class="fab fa-github"></i></a>
+
+                    <a href="https://www.instagram.com/mr_hrk_harish/" target="_blank"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <form id="contactForm">
+                    <div class="form-group"><input type="text" placeholder="Your Name" required></div>
+                    <div class="form-group"><input type="email" placeholder="Your Email" required></div>
+                    <div class="form-group"><textarea rows="5" placeholder="Your Message" required></textarea></div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Harish. All Rights Reserved.</p>
+    </footer>
+
+    <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB4pDtkE4fqUeYKG8ryQZyhP-wvRaxNmjk",
+  authDomain: "portfolio-468b0.firebaseapp.com",
+  databaseURL: "https://portfolio-468b0-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "portfolio-468b0",
+  storageBucket: "portfolio-468b0.firebasestorage.app",
+  messagingSenderId: "1080221180713",
+  appId: "1:1080221180713:web:2746ea1c57820279b3cd38",
+  measurementId: "G-XTSJ88X2D0"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Skills animation
+const skillsSection = document.getElementById('skills');
+const progressBars = document.querySelectorAll('.progress-fill');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            progressBars.forEach(bar => {
+                const width = bar.getAttribute('data-width');
+                bar.style.width = width;
+            });
+            observer.unobserve(skillsSection);
+        }
+    });
+}, { threshold: 0.5 });
+
+observer.observe(skillsSection);
+
+// Contact Form Submit
+const form = document.getElementById("contactForm");
+
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = form.querySelector('input[type="text"]').value;
+    const email = form.querySelector('input[type="email"]').value;
+    const message = form.querySelector('textarea').value;
+
+    await fetch("http://localhost:3000/send-email", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    name,
+    email,
+    message
+  })
+});
+
+    try {
+        await addDoc(collection(db, "messages"), {
+            name,
+            email,
+            message,
+            createdAt: new Date()
+        });
+
+        alert("Message sent successfully!");
+        form.reset();
+
+    } catch (error) {
+        console.error(error);
+        alert("Error sending message.");
+    }
+});
+</script>
+
+</body>
+</html>
